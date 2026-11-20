@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Свадьба</title>
+  <style>
+    @font-face {
+      font-family: 'Felidae';
+      src: url('Felidae.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      background: #15362f;
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      overflow: hidden;
+      background: #15362f;
+    }
+
+    .hero img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    @supports not (height: 100svh) {
+      .hero { height: 100vh; }
+    }
+
+    .section-photo {
+      width: 100%;
+      background: #15362f;
+      line-height: 0;
+    }
+
+    .section-photo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    /* Секция 5 — анкета поверх фонового фото */
+    .rsvp {
+      position: relative;
+      width: 100%;
+      background: #15362f url('5.png') top center / 100% auto no-repeat;
+    }
+
+    .rsvp__form {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 35% 20px 24px;
+      color: #f3f1e8;
+      font-family: 'Felidae', serif;
+      font-weight: normal;
+      -webkit-tap-highlight-color: transparent;
+      line-height: normal;
+    }
+
+    .rsvp__field {
+      margin-bottom: 18px;
+    }
+
+    .rsvp__label {
+      display: block;
+      font-size: clamp(16px, 4.5vw, 20px);
+      margin-bottom: 8px;
+      user-select: none;
+      color: #f3f1e8;
+    }
+
+    .rsvp__input,
+    .rsvp__select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      font-family: inherit;
+      font-weight: normal;
+      color: #15362f;
+      background: #f3f1e8;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .rsvp__input::placeholder {
+      color: rgba(21, 54, 47, 0.6);
+    }
+
+    .rsvp__input:focus,
+    .rsvp__select:focus {
+      background: #fff;
+    }
+
+    .rsvp__options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 14px;
+      margin-top: 4px;
+    }
+
+    .rsvp__options--single {
+      grid-template-columns: 1fr;
+    }
+
+    .rsvp__option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      padding: 4px 0;
+      color: #f3f1e8;
+    }
+
+    .rsvp__option input {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      border: 1.5px solid #f3f1e8;
+      border-radius: 4px;
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s ease;
+    }
+
+    .rsvp__option input[type="radio"] {
+      border-radius: 50%;
+    }
+
+    .rsvp__option input:checked {
+      background: #f3f1e8;
+    }
+
+    .rsvp__option input:checked::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 10px;
+      height: 10px;
+      background: #15362f;
+      border-radius: inherit;
+    }
+
+    .rsvp__submit {
+      display: block;
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      font-family: inherit;
+      font-weight: normal;
+      font-size: clamp(18px, 5vw, 22px);
+      color: #15362f;
+      background: #f3f1e8;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.15s ease;
+    }
+
+    .rsvp__submit:active {
+      opacity: 0.8;
+    }
+
+    /* Секция 6 — таймер поверх фонового фото */
+    .countdown {
+      position: relative;
+      width: 100%;
+      background: #15362f;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .countdown__bg {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    .countdown__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      line-height: normal;
+    }
+
+    .countdown__timer {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(2px, 1vw, 8px);
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      color: #f3f1e8;
+      font-family: 'Felidae', serif;
+    }
+
+    .countdown__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .countdown__num {
+      font-size: clamp(28px, 11vw, 56px);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown__label {
+      font-size: clamp(12px, 3.8vw, 18px);
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <img src="1.png" alt="Приглашение на свадьбу">
+  </section>
+
+  <section class="section-photo">
+    <img src="2.png" alt="">
+  </section>
+
+  <section class="section-photo">
+    <img src="3.png" alt="">
+  </section>
+
+  <section class="section-photo">
+    <img src="4.png" alt="">
+  </section>
+
+  <section class="rsvp">
+    <form class="rsvp__form" action="#" method="post">
+      <div class="rsvp__field">
+        <label class="rsvp__label" for="rsvp-name">Имя и фамилия</label>
+        <input class="rsvp__input" type="text" id="rsvp-name" name="name" placeholder="Ваше имя и фамилия" autocomplete="name" required>
+      </div>
+
+      <div class="rsvp__field">
+        <span class="rsvp__label">Сможете прийти?</span>
+        <div class="rsvp__options rsvp__options--single">
+          <label class="rsvp__option">
+            <input type="radio" name="attendance" value="yes" required>
+            <span>Приду</span>
+          </label>
+          <label class="rsvp__option">
+            <input type="radio" name="attendance" value="no">
+            <span>Не смогу прийти</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="rsvp__field">
+        <span class="rsvp__label">Предпочтения по напиткам</span>
+        <div class="rsvp__options">
+          <label class="rsvp__option">
+            <input type="checkbox" name="drinks" value="red-wine">
+            <span>Красное вино</span>
+          </label>
+          <label class="rsvp__option">
+            <input type="checkbox" name="drinks" value="white-wine">
+            <span>Белое вино</span>
+          </label>
+          <label class="rsvp__option">
+            <input type="checkbox" name="drinks" value="champagne">
+            <span>Шампанское</span>
+          </label>
+          <label class="rsvp__option">
+            <input type="checkbox" name="drinks" value="cognac">
+            <span>Коньяк</span>
+          </label>
+          <label class="rsvp__option">
+            <input type="checkbox" name="drinks" value="whiskey">
+            <span>Виски</span>
+          </label>
+          <label class="rsvp__option">
+            <input type="checkbox" name="drinks" value="vodka">
+            <span>Водка</span>
+          </label>
+          <label class="rsvp__option">
+            <input type="checkbox" name="drinks" value="non-alcohol">
+            <span>Безалкогольные напитки</span>
+          </label>
+        </div>
+      </div>
+
+      <button class="rsvp__submit" type="submit">Отправить</button>
+    </form>
+  </section>
+
+  <section class="countdown">
+    <img class="countdown__bg" src="6.png" alt="">
+    <div class="countdown__overlay">
+      <div class="countdown__timer" id="countdown-timer">
+        <div class="countdown__item">
+          <span class="countdown__num" id="cd-days">0</span>
+          <span class="countdown__label">дней</span>
+        </div>
+        <div class="countdown__item">
+          <span class="countdown__num" id="cd-hours">00</span>
+          <span class="countdown__label">часов</span>
+        </div>
+        <div class="countdown__item">
+          <span class="countdown__num" id="cd-minutes">00</span>
+          <span class="countdown__label">минут</span>
+        </div>
+        <div class="countdown__item">
+          <span class="countdown__num" id="cd-seconds">00</span>
+          <span class="countdown__label">секунд</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var target = new Date(2027, 4, 15, 0, 0, 0).getTime();
+
+      var elDays = document.getElementById('cd-days');
+      var elHours = document.getElementById('cd-hours');
+      var elMinutes = document.getElementById('cd-minutes');
+      var elSeconds = document.getElementById('cd-seconds');
+
+      function pad(n) {
+        return n < 10 ? '0' + n : '' + n;
+      }
+
+      function update() {
+        var now = Date.now();
+        var diff = target - now;
+
+        if (diff <= 0) {
+          elDays.textContent = '0';
+          elHours.textContent = '00';
+          elMinutes.textContent = '00';
+          elSeconds.textContent = '00';
+          return;
+        }
+
+        var totalSeconds = Math.floor(diff / 1000);
+        var days = Math.floor(totalSeconds / 86400);
+        var hours = Math.floor((totalSeconds % 86400) / 3600);
+        var minutes = Math.floor((totalSeconds % 3600) / 60);
+        var seconds = totalSeconds % 60;
+
+        elDays.textContent = days;
+        elHours.textContent = pad(hours);
+        elMinutes.textContent = pad(minutes);
+        elSeconds.textContent = pad(seconds);
+      }
+
+      update();
+      setInterval(update, 1000);
+    })();
+  </script>
+
+</body>
+</html>
